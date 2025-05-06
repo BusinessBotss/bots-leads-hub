@@ -16,10 +16,22 @@ export async function onRequestPost({ request, env }: { request: Request; env: E
       createdAt: new Date().toISOString(),
     };
 
-    // Store lead in KV
+    // Save lead in KV
     await env.LEAD_KV.put(`lead:${Date.now()}`, JSON.stringify(lead));
 
-    // Optional: send to external service (n8n, Zapier, etc.)
+    // Optional: Send to external service (n8n, Zapier, etc.)
     await fetch("https://n8n.yourdomain.com/webhook/lead-intake", {
       method: "POST",
-      body: J
+      body: JSON.stringify(lead),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).catch(() => {
+      // Silent fail to avoid crashing the Worker if webhook fails
+    });
+
+    return Response.redirect("/thank-you", 303);
+  } catch (error) {
+    return new Response("Server error", { status: 500 });
+  }
+}
