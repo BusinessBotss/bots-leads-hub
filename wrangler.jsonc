@@ -1,8 +1,22 @@
 {
+  "name": "hello-ai",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-05-06",
   "kv_namespaces": [
     {
       "binding": "LEAD_KV",
       "id": "28447a6b82c841e3acc9883b987ab54a"
     }
-  ]
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "THOMAS_SESSION",
+        "class_name": "ThomasSession"
+      }
+    ]
+  }
 }
