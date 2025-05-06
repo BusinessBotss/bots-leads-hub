@@ -19,29 +19,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
     createdAt: new Date().toISOString(),
   };
 
-  // Guardar el lead en KV
+  // Guarda en Cloudflare Workers KV
   await context.env.LEAD_KV.put(`lead:${Date.now()}`, JSON.stringify(lead));
 
-  return redirect("/thank-you");
-}
-
-export default function ContactForm() {
-  return (
-    <form method="post">
-      <label>
-        Name:
-        <input type="text" name="name" required />
-      </label>
-      <label>
-        Email:
-        <input type="email" name="email" required />
-      </label>
-      <label>
-        Message:
-        <textarea name="message" />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
-  );
-}
-
+  // Redirecciona a la página de agradecimiento
+  return redir
