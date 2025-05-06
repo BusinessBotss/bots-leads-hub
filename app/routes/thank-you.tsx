@@ -1,8 +1,8 @@
-export default function ThankYouPage() {
+export default function ThankYou() {
   return (
     <div>
       <h1>Thank you!</h1>
-      <p>Your message has been received. We’ll contact you soon.</p>
+      <p>We’ve received your message. Someone from the Business Bots team will contact you shortly.</p>
     </div>
   );
 }
