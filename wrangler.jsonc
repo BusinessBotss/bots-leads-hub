@@ -18,5 +18,11 @@
         "class_name": "ThomasSession"
       }
     ]
+  "migrations": [
+  {
+    "tag": "v1",
+    "new_classes": ["ThomasSession"]
   }
+]
+}
 }
