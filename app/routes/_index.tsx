@@ -19,7 +19,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     createdAt: new Date().toISOString(),
   };
 
-  // Guardar en Workers KV
+  // Guardar el lead en KV
   await context.env.LEAD_KV.put(`lead:${Date.now()}`, JSON.stringify(lead));
 
   return redirect("/thank-you");
@@ -44,3 +44,4 @@ export default function ContactForm() {
     </form>
   );
 }
+
