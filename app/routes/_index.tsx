@@ -1,11 +1,15 @@
-import { redirect } from "@remix-run/react";
-import { nanoid } from "nanoid";
-
-export const loader = () => {
-  const id = nanoid();
-  return redirect(`/${id}`);
-};
-
-export default function Index() {
-  return <div>'Whatever you put here will not be shown'</div>;
-}
+<form method="post">
+  <label>
+    Name:
+    <input type="text" name="name" required />
+  </label>
+  <label>
+    Email:
+    <input type="email" name="email" required />
+  </label>
+  <label>
+    Message:
+    <textarea name="message" />
+  </label>
+  <button type="submit">Send</button>
+</form>
