@@ -1,37 +1,25 @@
-import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore This file won’t exist if it hasn’t yet been built
-import * as build from "./build/server";
-import { getLoadContext } from "./load-context";
+export async function onRequestPost({ request, env }: { request: Request; env: Env }) {
+  try {
+    const formData = await request.formData();
+    const name = formData.get("name")?.toString() || "";
+    const email = formData.get("email")?.toString() || "";
+    const message = formData.get("message")?.toString() || "";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleRemixRequest = createRequestHandler(build as any as ServerBuild);
-
-export default {
-  async fetch(request, env, ctx) {
-    try {
-      const loadContext = getLoadContext({
-        request,
-        context: {
-          cloudflare: {
-            // This object matches the return value from Wrangler's
-            // `getPlatformProxy` used during development via Remix's
-            // `cloudflareDevProxyVitePlugin`:
-            // https://developers.cloudflare.com/workers/wrangler/api/#getplatformproxy
-            cf: request.cf,
-            ctx: {
-              waitUntil: ctx.waitUntil.bind(ctx),
-              passThroughOnException: ctx.passThroughOnException.bind(ctx),
-            },
-            caches,
-            env,
-          },
-        },
-      });
-      return await handleRemixRequest(request, loadContext);
-    } catch (error) {
-      console.log(error);
-      return new Response("An unexpected error occurred", { status: 500 });
+    if (!name || !email) {
+      return new Response("Missing required fields", { status: 400 });
     }
-  },
-} satisfies ExportedHandler<Env>;
+
+    const lead = {
+      name,
+      email,
+      message,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Store lead in KV
+    await env.LEAD_KV.put(`lead:${Date.now()}`, JSON.stringify(lead));
+
+    // Optional: send to external service (n8n, Zapier, etc.)
+    await fetch("https://n8n.yourdomain.com/webhook/lead-intake", {
+      method: "POST",
+      body: J
