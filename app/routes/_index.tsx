@@ -11,5 +11,5 @@
     Message:
     <textarea name="message" />
   </label>
-  <button type="submit">Send</button>
+  <button type="submit">Submit</button>
 </form>
